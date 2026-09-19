@@ -364,4 +364,4 @@ Guard 仅为薄封装；业务服务应通过 `AccessDecisionService.assertAllow
 - [私有化对接](../develop/iam-private-deploy.md) · [企业 SSO](../develop/iam-enterprise-sso.md) · [嵌入对接](../develop/embed-integration.md)
 - 工程契约：`spec/contracts/iam-v2.md` · `spec/contracts/access-error.md`
 - 工程路线图索引：`plan/iam-v2-roadmap.md`
-- 历史选型摘录见 [PERMISSION_ARCHITECTURE.md](./PERMISSION_ARCHITECTURE.md)（已归档，勿作权威）
+- 历史选型摘录已归档删除；以本文与 [企业 SSO](/develop/iam-enterprise-sso) / [私有化权限对接](/develop/iam-private-deploy) 为准

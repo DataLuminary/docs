@@ -13,7 +13,9 @@
 | `funnel` | 漏斗图 |
 | `gauge` / `liquid` / `radial` | 仪表 / 水球 / 径向 |
 | `number-panel` | 数字指标卡 |
+| `status-alarm-card` | [状态告警](./status-alarm-card.md)（阈值分级 + 点击计数过滤本卡明细） |
 | `word-cloud` | 词云 |
 | `map` | 地图 |
 | `rich-text` | [富文本](./rich-text.md)（Markdown + 动态指标胶囊） |
 | `image` / `video` | 图片 / 视频（媒体，不依赖查询） |
+| `screen-nav-menu` | [大屏导航菜单](./screen-nav-menu.md)（不查询；菜单项发出交互事件） |

@@ -1,50 +1,16 @@
 [
-  {
-    "type": "file",
-    "name": "dashboard-layout-plugins",
-    "label": "仪表盘与布局插件架构"
-  },
-  {
-    "type": "file",
-    "name": "dashboard-position-layout",
-    "label": "自由布局大屏设计与实现"
-  },
-  {
-    "type": "file",
-    "name": "dashboard-interact-engine",
-    "label": "仪表盘交互引擎"
-  },
-  {
-    "type": "file",
-    "name": "dashboard-global-filters",
-    "label": "仪表盘全局过滤"
-  },
-  {
-    "type": "file",
-    "name": "ai-insights",
-    "label": "AI 洞察设计与实现"
-  },
-  {
-    "type": "file",
-    "name": "dataset-provisioning",
-    "label": "数据集零配置供给"
-  },
-  {
-    "type": "divider"
-  },
-  {
-    "type": "file",
-    "name": "iam-private-deploy",
-    "label": "私有化权限对接"
-  },
-  {
-    "type": "file",
-    "name": "iam-enterprise-sso",
-    "label": "企业 SSO 接入"
-  },
-  {
-    "type": "file",
-    "name": "embed-integration",
-    "label": "第三方嵌入对接"
-  }
+  { "type": "file", "name": "index", "label": "开发导览" },
+  { "type": "file", "name": "architecture", "label": "架构概览" },
+  { "type": "file", "name": "api", "label": "API 参考索引" },
+  { "type": "divider" },
+  { "type": "file", "name": "embed-integration", "label": "第三方嵌入对接" },
+  { "type": "file", "name": "iam-enterprise-sso", "label": "企业 SSO 接入" },
+  { "type": "file", "name": "iam-private-deploy", "label": "私有化权限对接" },
+  { "type": "divider" },
+  { "type": "file", "name": "dashboard-interact-engine", "label": "仪表盘交互引擎" },
+  { "type": "file", "name": "dashboard-layout-plugins", "label": "仪表盘与布局插件架构" },
+  { "type": "file", "name": "dashboard-position-layout", "label": "自由布局大屏设计与实现" },
+  { "type": "file", "name": "dashboard-global-filters", "label": "仪表盘全局过滤" },
+  { "type": "file", "name": "ai-insights", "label": "AI 洞察设计与实现" },
+  { "type": "file", "name": "dataset-provisioning", "label": "数据集零配置供给" }
 ]

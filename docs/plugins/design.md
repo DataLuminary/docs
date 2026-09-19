@@ -85,7 +85,7 @@ const { Panel, Config } = await resolvePanelPlugin("line");
 - 宿主 `usePanelQueryController` → `POST /query/panel`。  
 - 插件内建议把「查询结果 → 图表库 options」收进 hooks，便于替换 G2 / ECharts 等实现。
 
-返回结构与接口说明见 [API · Panel](/api/Charts)、[API · Query](/api/Query)。
+返回结构与接口说明见 [API 参考索引](/develop/api)。
 
 ## 相关规格（工程）
 

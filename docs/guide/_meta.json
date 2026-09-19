@@ -1,0 +1,8 @@
+[
+  { "type": "file", "name": "index", "label": "指南首页" },
+  { "type": "file", "name": "connect-data", "label": "连接数据" },
+  { "type": "file", "name": "build-dashboard", "label": "做一张仪表盘" },
+  { "type": "file", "name": "screen-interact", "label": "大屏与交互" },
+  { "type": "file", "name": "share-subscribe", "label": "分享与订阅" },
+  { "type": "file", "name": "request-access", "label": "申请权限" }
+]

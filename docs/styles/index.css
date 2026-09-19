@@ -3,7 +3,12 @@
   line-height: 1.6;
 }
 
-/* Mermaid diagrams rendered from ```mermaid fences */
+/* Mermaid diagrams rendered from ```mermaid fences.
+   Hide the Shiki block in place; do not remove it from React's tree. */
+.mermaid-source-hidden {
+  display: none !important;
+}
+
 .mermaid-diagram {
   margin: 1.25rem 0;
   overflow-x: auto;

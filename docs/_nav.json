@@ -1,204 +1,87 @@
 [
   {
+    "text": "开始",
+    "activeMatch": "/start/",
+    "items": [
+      { "text": "选择入口", "link": "/start/" },
+      { "text": "普通用户", "link": "/start/user" },
+      { "text": "开发者", "link": "/start/developer" },
+      { "text": "企业客户", "link": "/start/enterprise" },
+      { "text": "投资者", "link": "/start/investor" }
+    ]
+  },
+  {
     "text": "产品",
     "activeMatch": "/product/",
     "items": [
-      {
-        "text": "产品概览",
-        "link": "/product/"
-      },
-      {
-        "text": "战略白皮书",
-        "link": "/product/whitepaper"
-      },
-      {
-        "text": "产品形态",
-        "link": "/product/shape"
-      },
-      {
-        "text": "完整产品能力",
-        "link": "/product/features"
-      },
-      {
-        "text": "数据集与分析存储",
-        "link": "/product/dataset-modeling"
-      },
-      {
-        "text": "AI 洞察",
-        "link": "/product/ai-insights"
-      },
-      {
-        "text": "产品愿景",
-        "link": "/product/vision"
-      },
-      {
-        "text": "生态协同",
-        "link": "/product/ecosystem"
-      },
-      {
-        "text": "统一身份与 SSO",
-        "link": "/product/unified-identity"
-      },
-      {
-        "text": "仪表盘与布局插件",
-        "link": "/product/dashboard-layout-plugins"
-      },
-      {
-        "text": "自由布局固定尺寸",
-        "link": "/product/position-layout-fixed-canvas"
-      },
-      {
-        "text": "无障碍范围",
-        "link": "/product/accessibility-scope"
-      }
+      { "text": "产品概览", "link": "/product/" },
+      { "text": "产品形态", "link": "/product/shape" },
+      { "text": "完整产品能力", "link": "/product/features" },
+      { "text": "设计理念", "link": "/product/design-philosophy" },
+      { "text": "战略白皮书", "link": "/product/whitepaper" },
+      { "text": "产品愿景", "link": "/product/vision" },
+      { "text": "数据集与分析存储", "link": "/product/dataset-modeling" },
+      { "text": "AI 洞察", "link": "/product/ai-insights" },
+      { "text": "仪表盘与布局", "link": "/product/dashboard-layout-plugins" },
+      { "text": "仪表盘交互", "link": "/product/dashboard-interactions" },
+      { "text": "场景化 Demo", "link": "/product/scenario-demo" },
+      { "text": "统一身份与 SSO", "link": "/product/unified-identity" },
+      { "text": "生态协同", "link": "/product/ecosystem" },
+      { "text": "未来版本", "link": "/product/upcoming" },
+      { "text": "无障碍范围", "link": "/product/accessibility-scope" }
     ]
   },
   {
-    "text": "架构",
-    "activeMatch": "/overview/",
+    "text": "指南",
+    "activeMatch": "/guide/",
     "items": [
-      {
-        "text": "设计理念",
-        "link": "/overview/"
-      },
-      {
-        "text": "架构概览",
-        "link": "/overview/framework"
-      }
+      { "text": "指南首页", "link": "/guide/" },
+      { "text": "连接数据", "link": "/guide/connect-data" },
+      { "text": "做一张仪表盘", "link": "/guide/build-dashboard" },
+      { "text": "大屏与交互", "link": "/guide/screen-interact" },
+      { "text": "分享与订阅", "link": "/guide/share-subscribe" },
+      { "text": "申请权限", "link": "/guide/request-access" }
     ]
   },
   {
-    "text": "分享",
-    "activeMatch": "/share/",
+    "text": "交付",
+    "activeMatch": "^/(deliver|migrate|permission|share)/",
     "items": [
-      {
-        "text": "分享总览",
-        "link": "/share/"
-      },
-      {
-        "text": "仪表盘嵌入",
-        "link": "/share/embed"
-      },
-      {
-        "text": "订阅推送",
-        "link": "/share/subscription"
-      }
-    ]
-  },
-  {
-    "text": "权限",
-    "activeMatch": "/permission/",
-    "items": [
-      {
-        "text": "概念",
-        "link": "/permission/"
-      },
-      {
-        "text": "申请与审批",
-        "link": "/permission/usage"
-      },
-      {
-        "text": "架构设计",
-        "link": "/permission/architecture"
-      },
-      {
-        "text": "常见问题",
-        "link": "/permission/faq"
-      }
-    ]
-  },
-  {
-    "text": "插件",
-    "activeMatch": "/plugins/",
-    "items": [
-      {
-        "text": "核心概念",
-        "link": "/plugins/"
-      },
-      {
-        "text": "开发说明",
-        "link": "/plugins/design"
-      },
-      {
-        "text": "图表插件",
-        "link": "/plugins/panel"
-      },
-      {
-        "text": "图表类型",
-        "link": "/plugins/panelTypes"
-      },
-      {
-        "text": "富文本",
-        "link": "/plugins/rich-text"
-      },
-      {
-        "text": "仪表盘与布局",
-        "link": "/plugins/dashboard"
-      },
-      {
-        "text": "数据源插件",
-        "link": "/plugins/datasource"
-      }
-    ]
-  },
-  {
-    "text": "竞品与迁入",
-    "activeMatch": "/migrate/",
-    "items": [
-      {
-        "text": "竞品对比",
-        "link": "/migrate/compare"
-      },
-      {
-        "text": "Grafana 迁入",
-        "link": "/migrate/grafana"
-      },
-      {
-        "text": "DataEase 迁入",
-        "link": "/migrate/dataease"
-      }
+      { "text": "交付概览", "link": "/deliver/" },
+      { "text": "竞品对比", "link": "/migrate/compare" },
+      { "text": "Grafana 迁入", "link": "/migrate/grafana" },
+      { "text": "DataEase 迁入", "link": "/migrate/dataease" },
+      { "text": "权限概念", "link": "/permission/" },
+      { "text": "申请与审批", "link": "/permission/usage" },
+      { "text": "权限 FAQ", "link": "/permission/faq" },
+      { "text": "分享总览", "link": "/share/" },
+      { "text": "仪表盘嵌入", "link": "/share/embed" },
+      { "text": "订阅推送", "link": "/share/subscription" },
+      { "text": "统一身份与 SSO", "link": "/product/unified-identity" },
+      { "text": "安全与合规", "link": "/deliver/security" }
     ]
   },
   {
     "text": "开发",
-    "activeMatch": "/develop/",
+    "activeMatch": "^/(develop|plugins|overview)/",
     "items": [
-      {
-        "text": "仪表盘与布局架构",
-        "link": "/develop/dashboard-layout-plugins"
-      },
-      {
-        "text": "自由布局设计与实现",
-        "link": "/develop/dashboard-position-layout"
-      },
-      {
-        "text": "交互引擎",
-        "link": "/develop/dashboard-interact-engine"
-      },
-      {
-        "text": "全局过滤",
-        "link": "/develop/dashboard-global-filters"
-      },
-      {
-        "text": "AI 洞察设计与实现",
-        "link": "/develop/ai-insights"
-      },
-      {
-        "text": "数据集零配置供给",
-        "link": "/develop/dataset-provisioning"
-      },
-      {
-        "text": "私有化权限对接",
-        "link": "/develop/iam-private-deploy"
-      },
-      {
-        "text": "企业 SSO 接入",
-        "link": "/develop/iam-enterprise-sso"
-      },
-      {
-        "text": "第三方嵌入对接",
-        "link": "/develop/embed-integration"
-      }
+      { "text": "开发导览", "link": "/develop/" },
+      { "text": "架构概览", "link": "/develop/architecture" },
+      { "text": "API 参考索引", "link": "/develop/api" },
+      { "text": "第三方嵌入对接", "link": "/develop/embed-integration" },
+      { "text": "企业 SSO 接入", "link": "/develop/iam-enterprise-sso" },
+      { "text": "私有化权限对接", "link": "/develop/iam-private-deploy" },
+      { "text": "权限架构设计", "link": "/permission/architecture" },
+      { "text": "插件核心概念", "link": "/plugins/" },
+      { "text": "插件开发说明", "link": "/plugins/design" },
+      { "text": "图表插件", "link": "/plugins/panel" },
+      { "text": "状态告警卡片", "link": "/plugins/status-alarm-card" },
+      { "text": "数据源插件", "link": "/plugins/datasource" },
+      { "text": "交互引擎", "link": "/develop/dashboard-interact-engine" },
+      { "text": "布局与自由布局", "link": "/develop/dashboard-layout-plugins" },
+      { "text": "全局过滤", "link": "/develop/dashboard-global-filters" },
+      { "text": "AI 洞察实现", "link": "/develop/ai-insights" },
+      { "text": "数据集零配置供给", "link": "/develop/dataset-provisioning" }
     ]
   }
 ]

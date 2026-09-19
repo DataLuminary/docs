@@ -1,12 +1,4 @@
 [
-  {
-    "type": "file",
-    "name": "index",
-    "label": "设计理念"
-  },
-  {
-    "type": "file",
-    "name": "framework",
-    "label": "架构概览"
-  }
+  { "type": "file", "name": "index", "label": "已迁移：设计理念" },
+  { "type": "file", "name": "framework", "label": "已迁移：架构概览" }
 ]

@@ -1,0 +1,4 @@
+[
+  { "type": "file", "name": "index", "label": "交付概览" },
+  { "type": "file", "name": "security", "label": "安全与合规" }
+]

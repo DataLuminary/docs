@@ -1,10 +1,20 @@
 ﻿# ProductWhitePaper
 
-ProductWhitePaper is the [Rspress 2](https://rspress.rs/) site for DataLuminary user and developer documentation.
+ProductWhitePaper is the [Rspress 2](https://rspress.rs/) site for **DataLuminary** user and developer documentation (one site, four audience entry points).
+
+## Information architecture
+
+| Top nav | Path | Audience |
+|---------|------|----------|
+| 开始 | `/start/` | Persona hubs (curated paths, no duplicated body copy) |
+| 产品 | `/product/` | Capabilities, vision, whitepaper |
+| 指南 | `/guide/` | Task-oriented end-user guides |
+| 交付 | `/deliver/` + `/migrate` `/permission` `/share` | Enterprise eval and rollout |
+| 开发 | `/develop/` + `/plugins` | Architecture, integration, plugins |
+
+Sibling LuminaryWorks products: bridge only via `/product/ecosystem` → [LuminaryWorks docs](https://github.com/LuminaryWorks/docs).
 
 ## Setup
-
-Install the dependencies:
 
 ```bash
 pnpm install
@@ -14,21 +24,14 @@ Requires **Node.js >= 24** (see `engines` / `.nvmrc`).
 
 ## Get started
 
-Start the dev server:
-
 ```bash
 pnpm run dev
 ```
 
-Build the website for production:
+Dev server: **http://localhost:18182/**
 
 ```bash
 pnpm run build
-```
-
-Preview the production build locally:
-
-```bash
 pnpm run preview
 ```
 

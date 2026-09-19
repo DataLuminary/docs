@@ -20,21 +20,17 @@ DataLuminary 是面向 AI 时代的开源 BI 数据洞察平台。它把数据�
 
 ## 读者入口
 
-- 想了解产品战略与投资逻辑：阅读 [战略白皮书](./whitepaper.md)。
-- 想了解统一账号与企业 SSO：阅读 [统一身份与企业 SSO](./unified-identity.md)。
-- 想了解完整产品形态：阅读 [产品形态](./shape.md)。
-- 想了解完整能力矩阵：阅读 [完整产品能力](./features.md)。
-- 想了解创建数据集、语义模型与分析存储：阅读 [数据集与分析存储](./dataset-modeling.md)（Develop：[设计与实现](../develop/dataset-provisioning.md)）。
-- 想了解 AI 问数 / 知识库 RAG / 企业 MCP：阅读 [AI 洞察](./ai-insights.md)（Develop：[设计与实现](../develop/ai-insights.md)）。
-- 想理解长期技术与产品判断：阅读 [产品愿景](./vision.md)。
-- 想了解五产品协同：阅读 [LuminaryWorks AI 生态](./ecosystem.md)。
-- 想了解产品边界（含无障碍范围）：阅读 [无障碍范围说明](./accessibility-scope.md)。
-- 想了解自由布局大屏为何固定尺寸：阅读 [自由布局大屏固定尺寸](./position-layout-fixed-canvas.md)（Develop：[设计与实现](../develop/dashboard-position-layout.md)）。
-- 想了解仪表盘 / 布局插件分层与 Focus 聚焦编辑：阅读 [仪表盘与布局插件](./dashboard-layout-plugins.md)（Develop：[设计与实现](../develop/dashboard-layout-plugins.md)）。
-- 想了解仪表盘交互（筛选 / 联动 / 下钻）架构：阅读 [完整产品能力 · 交互引擎](./features.md)（Develop：[设计与实现](../develop/dashboard-interact-engine.md)）。
-- 想了解仪表盘全局过滤（编辑态规则、查询自动注入）：阅读 [完整产品能力 · 全局过滤](./features.md)（Develop：[设计与实现](../develop/dashboard-global-filters.md)）。
+按角色从 [开始](/start/) 分流（普通用户 / 开发者 / 企业客户 / 投资者）。本页保留主题索引：
 
-开发与发版规划（里程碑、版本节奏、治理规范）维护在 MetaRepo 的 [`plan/`](https://github.com/DataLuminary/DataLuminary-Platform/tree/main/plan) 目录，不在产品文档中重复展开。
+- [设计理念](./design-philosophy.md) · [产品形态](./shape.md) · [完整产品能力](./features.md) · [未来版本](./upcoming.md)
+- [战略白皮书](./whitepaper.md) · [产品愿景](./vision.md) · [生态协同](./ecosystem.md)
+- [数据集与分析存储](./dataset-modeling.md)（实现：[零配置供给](../develop/dataset-provisioning.md)）
+- [AI 洞察](./ai-insights.md)（实现：[AI 洞察设计](../develop/ai-insights.md)）
+- [仪表盘与布局](./dashboard-layout-plugins.md) · [仪表盘交互](./dashboard-interactions.md) · [场景 Demo](./scenario-demo.md)
+- [统一身份与企业 SSO](./unified-identity.md) · [无障碍范围](./accessibility-scope.md)
+- [状态告警卡片](../plugins/status-alarm-card.md) · 附录：[自由布局固定尺寸](./position-layout-fixed-canvas.md)
+
+开发与发版规划在 MetaRepo [`plan/`](https://github.com/DataLuminary/DataLuminary-Platform/tree/main/plan)，不在本站展开。
 
 ## 核心能力一览
 

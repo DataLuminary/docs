@@ -28,6 +28,16 @@
     "name": "rich-text",
     "label": "富文本图表"
   },
+    {
+      "type": "file",
+      "name": "status-alarm-card",
+      "label": "状态告警卡片"
+    },
+    {
+      "type": "file",
+      "name": "screen-nav-menu",
+      "label": "大屏导航菜单"
+    },
   {
     "type": "file",
     "name": "dashboard",

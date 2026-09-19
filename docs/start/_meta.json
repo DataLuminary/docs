@@ -1,0 +1,7 @@
+[
+  { "type": "file", "name": "index", "label": "选择入口" },
+  { "type": "file", "name": "user", "label": "普通用户" },
+  { "type": "file", "name": "developer", "label": "开发者" },
+  { "type": "file", "name": "enterprise", "label": "企业客户" },
+  { "type": "file", "name": "investor", "label": "投资者" }
+]

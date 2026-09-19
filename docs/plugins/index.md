@@ -48,6 +48,8 @@ flowchart LR
 - 契约：`definePanelPlugin` → `Panel` / `Config`（可选 AdvancePanel）。  
 - 内置类型一览：[图表类型](./panelTypes.md)  
 - 富文本等特殊 Widget：[富文本](./rich-text.md)  
+- 监控 / 大屏状态摘要：[状态告警卡片](./status-alarm-card.md)（点击四级计数过滤本卡明细）  
+- 大屏顶栏导航：[大屏导航菜单](./screen-nav-menu.md)（菜单项只发事件，切页 / 跳转由交互规则完成）  
 - 开发说明：[图表插件](./panel.md)
 
 ## 数据源插件
@@ -58,7 +60,7 @@ flowchart LR
 
 ## 交互（action）插件
 
-筛选、时间范围等写入仪表盘状态；交互引擎按配置 **派生** 各图表附加条件（状态驱动，而非图表间事件互抛）。产品能力见 [完整产品能力 · 交互引擎](/product/features)；实现见 [交互引擎](/develop/dashboard-interact-engine)。
+筛选、时间范围等写入仪表盘状态；交互引擎按配置 **派生** 各图表附加条件（状态驱动，而非图表间事件互抛）。版本级交互规则（强调、切页、跳转）与联动分工见 [仪表盘交互能力](/product/dashboard-interactions)。产品能力见 [完整产品能力 · 交互引擎](/product/features)；实现见 [交互引擎](/develop/dashboard-interact-engine)。
 
 ## 下一步
 

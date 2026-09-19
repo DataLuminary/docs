@@ -1,114 +1,124 @@
 # 仪表盘交互引擎：设计与实现
 
-> **状态**：已实现（2026-07）  
-> **受众**：前端、全栈、架构评审、AI Agent  
-> **产品说明**：[完整产品能力 · 状态驱动交互引擎](../product/features.md)  
-> **实现 spec（权威）**：[DataView/spec/development/dashboard-interact-engine.md](https://github.com/DataLuminary/DataView/blob/main/spec/development/dashboard-interact-engine.md)
+> **受众**：前端、全栈、架构评审  
+> **产品说明**：[仪表盘交互能力](../product/dashboard-interactions.md)（原理、为何拆四类、配置步骤）  
+> **契约**：MetaRepo `spec/contracts/dashboard-interactions.md`  
+> **索引**：`spec/development/dashboard-interact-overview.md`
 
-## 1. 设计目标
+产品侧要同时做到：筛选控件改多图、主图点一下从图表跟着变、单图下钻、以及大屏上的强调 / 切页 / 跳转。若每张图自己监听别的图，或全图共享一个大 `filters` 对象，画布一大就会全量重渲染，而且无法解释「这一下为什么没联动」。本引擎用**可序列化的运行时状态 + 按图派生**，把查询类交互和表现类交互分成两条通道。
 
-仪表盘交互需要同时支持：
+## 1. 为什么不用另外两种做法
 
-- **交互组件（Action）**：下拉、输入、时间等控件筛选多张图表；
-- **图表联动（Linkage）**：点击主图，从图表按维度过滤；
-- **图表下钻（Drill-down）**：单图层级探索，可回退。
+| 做法 | 问题 |
+|------|------|
+| 全图订阅同一个可变 `filters` | 任一条件变化，订阅者都要重算。百张图的大屏会一起重渲染，即使大多数图的条件没变。 |
+| 图表之间 `emit` / `on` | 流向写在插件里，调试要沿调用栈追。状态是事件累积出来的，刷新页面、分享链接、下钻和联动抢同一次点击时没有单一事实来源。 |
 
-设计目标是：**高性能、单向数据流、可测试、可 URL 恢复**，避免事件网失控。
+采用的模型：
 
-## 2. 架构模式对比
-
-历史上常见三类做法，DataLuminary 只采用第三列：
-
-| 模式 | 核心思路 | 优点 | 缺点 | DataLuminary |
-|------|----------|------|------|--------------|
-| **全局共享模式** | 所有图表读同一个大 `filters` 对象 | 实现简单 | 任一条件变化易触发全盘重算/重渲染 | **不采用** |
-| **事件驱动模式** | `emit` / `on` 图表互抛事件 | 局部改动快 | 流向隐式、难调试、难做 URL 状态恢复，易成“意大利面条” | **不采用** |
-| **状态驱动 + 派生订阅** | 最小运行时状态 + 纯函数引擎按图派生条件 | 单向流、细粒度订阅、可测、可序列化 | 需维护 FilterEngine 规则 | **采用** |
+1. 用户操作只写入运行时 store，不直接改其它图表的 props。
+2. 每张图用 selector 读取**自己的**派生结果。查询条件没变就不请求。
+3. 配置（作用范围、联动、交互规则）是版本上的数据，不是插件之间的硬编码监听。
 
 ```text
-全局共享模式                 事件驱动模式                 状态驱动 + 派生订阅
-┌──────────────┐           A ──emit──► B              Action/Click
-│ filters 大对象 │           │           │                   │
-│ 全图订阅广播  │           └──emit──► C              Runtime Store
-└──────────────┘           （隐式网状）                     │
-                                                     FilterEngine（纯函数）
-                                                            │
-                                                     仅受影响图表刷新
+用户操作
+  → Runtime Store（actionValues / linkValues / drillStates）
+  → FilterEngine.computeForPanel（纯函数，按 panel 派生）
+  → 仅 extraWheres / 变量实质变化的图重新查询
+
+同一操作若还匹配交互规则
+  → resolveInteractions（纯函数）
+  → effectHandlers
+       查询类效果写入 linkValues / actionValues（回到上面的通道）
+       表现类效果写入 Presentation Store（不进 queryKey）
 ```
 
-说明：
+「状态驱动」指的是交互结果可序列化、可单测，不是把高亮也塞进查询缓存键。
 
-- 「全局模式」指 **共享可变过滤大对象**，不是“全局配置文件”。
-- 「事件驱动」指图表之间 **直接 pub/sub**，状态靠事件累积，不利于分享链接还原。
-- 「状态驱动」把交互写成 **可序列化状态**，由引擎 **声明式** 算出每张图的附加条件。
+## 2. 两条通道
 
-## 3. 实现要点
+| | 查询态 | 表现态 |
+|--|--------|--------|
+| Store | `dashboardRuntime`：`actionValues`、`linkValues`、`drillStates` | `dashboardPresentation`：emphasis、visibility、activeSlots、detail |
+| 谁写入 | 筛选控件、联动点击、下钻、以及效果里的 `filterPanels` / `setVariable` | `emphasizePanels`、`togglePanels`、`activateSlot`、`openDetail` |
+| 会不会改 queryKey | 会。条件变了才重新请求 | **不会**。离开页面 `resetPresentation` |
+| 能否放进分享 URL | Flag 可用查询参数 `av` **只读**恢复；打开后不再回写 | 不恢复。渲染页、嵌入页也不能靠链接还原高亮或当前页签 |
 
-### 3.1 代码归属（DataView）
+这样设计是因为高亮和切页若进入 queryKey，每次强调都会打一次查询，大屏巡航会变成持续打库。跳转类效果另走导航守卫，不进任一 store 的查询指纹。
+
+后端把 `dashboard_version.interactions` 当不透明 JSONB 存储，不解析 `effects`，也不在 QueryService 里按规则改 SQL。`filterPanels` 在前端复用与 `links` 相同的 `linkValues`，避免两套过滤语义。
+
+## 3. 四类配置分别落在哪
+
+| 能力 | 编辑入口 | 持久化 | 运行时 |
+|------|----------|--------|--------|
+| 筛选控件 | 控件面板配置：Flag、选项来源、作用范围（数据集 + 图表 + 对应字段） | 面板 config（`scopes`） | 写入 `actionValues[flag]` |
+| 联动 | 编辑器顶栏「联动」 | `dashboard_version.links` | 点击主图写入 `linkValues` |
+| 下钻 | 图表查询区的下钻路径 | 该图 `query.drillDown` / `isDrilled` | `drillStates`；面包屑回退 |
+| 交互规则 | 面板「交互」Tab；无人值守在版本 policy | `dashboard_version.interactions` | `resolveInteractions` → `effectHandlers` |
+
+作用范围里的「对应字段」和选项的「值字段 / 标签字段」不是同一配置。前者决定过滤图表的哪一列，必须从目标数据集字段选择（`rawName`），不接受手输。同一控件可有多行 scope。
+
+`FilterEngine.computeForPanel` 对落在 scope 内的图追加 `extraWheres`。若该图仍走原生 SQL，同一 Flag 进入 `sqlVariables`（`{{flag}}`），不按 scope 写 Where。媒体面板不查询，不注入。
+
+全局过滤（编辑器顶栏「过滤」）在服务端按数据集注入，与本引擎正交，可叠加。见 [全局过滤](./dashboard-global-filters.md)。
+
+## 4. 一次点击怎么裁决
+
+图表数据点（G2 `element:click` → `onPlotClick`）顺序固定，写在 panel-wrapper，插件不得再抢：
+
+1. `canAdvanceDrill` 为真 → 只 `drillDown`，返回。
+2. 否则若本图是某条 `links` 的主图 → 写入或再次点击清除 `linkValues`。
+3. 再 `dispatchInteractionEvent({ kind: "dataPointClick" })`。
+
+面板壳上的单击（`kind: "click"`）不经过 1 和 2。若事件目标在 `canvas` / G2 节点内，壳层点击让给数据点处理，避免点柱子时壳层规则再执行一遍。
+
+悬停可以进 `resolveInteractions`，但 leave 阶段只保留可撤销效果（强调、显隐、复位、以及已约定可撤销的过滤）。导航类效果在 leave 时丢弃。**禁止**把 hover 接进 `FilterEngine` 作为筛数入口：划过会连续 enter/leave，查询会被打爆。
+
+未知 `kind` 在归一化时忽略，不得抛错拆掉整页。
+
+## 5. 交互规则的执行与表面
+
+`useInteractionDispatcher` 读取版本上的 `interactions`，用当前面板树 uid 过滤已经删掉的目标，再调用 `dispatchResolvedInteractions`。
+
+| 表面 | 跳转 / 开详情 |
+|------|----------------|
+| 查看、编辑画布上的运行态 | 允许；`openDashboard` 前检查目标 view 权限 |
+| `editor-preview` | 不导航 |
+| 对外 `render` | 丢掉全部导航类效果 |
+| `share-embed` | 不允许 `openDashboard` |
+| `openUrl` | 仅 http(s) |
+
+装饰在运行态默认 `pointer-events` 穿透。只有配置了交互规则，或插件声明 `emitsInteraction`（如大屏导航的 `menuItem`）的热点才可点。不要给装饰层全局 `pointer-events: auto`。
+
+大屏导航只发出「选中了哪个 `itemKey`」。切页是 `activateSlot`，跳转是 `openUrl` / `openDashboard`。插件不自己改路由。
+
+无人值守由 `useDashboardRuntimeLifecycle` 挂载：`policy.idleResetMs` 到期且没有匹配的 idle 规则时，复位表现态并清空 linkValues；`policy.patrol` 按间隔改 `activeSlots`。离开页面清理定时器。
+
+## 6. 代码落点（DataView）
 
 | 路径 | 职责 |
 |------|------|
-| `src/types/interact.ts` | Action Scope、Linkage 配置类型 |
-| `src/store/dashboardRuntime.ts` | `actionValues` / `linkValues` / `drillStates` |
-| `src/utils/filterEngine.ts` | `computeForPanel` 纯函数派生 |
-| `src/components/wrapper/panel-wrapper/` | 订阅派生条件、点击上抛、下钻面包屑 |
-| `src/plugins/actions/selector/` | 下拉选择器 |
-| `src/plugins/actions/shared/ActionChooseRange.tsx` | 作用域配置 |
-| `src/pages/dashboard/editor/.../LinkageEditor.tsx` | 联动配置侧栏 |
+| `src/types/interact.ts` | Action scope、联动相关配置类型 |
+| `src/types/interaction.ts` | 版本级规则、触发、效果；`normalizeInteractionSet` |
+| `src/utils/filterEngine.ts` | `computeForPanel` |
+| `src/utils/interactionEngine.ts` | `resolveInteractions`（无副作用） |
+| `src/store/dashboardRuntime.ts` | 查询态 |
+| `src/store/dashboardPresentation.ts` | 表现态 |
+| `src/interaction/effectHandlers.ts` | 效果注册表 |
+| `src/interaction/navigationGuards.ts` | 跳转白名单与表面判断 |
+| `src/components/wrapper/panel-wrapper/` | 点击分发、下钻、派生条件订阅 |
+| `src/pages/dashboard/editor/links/` | 联动配置 |
+| `src/pages/dashboard/editor/interactions/` | 交互 Tab |
+| `src/plugins/actions/` | 筛选控件与作用范围表单 |
 
-### 3.2 数据流
+后端：`DataTalk` `dashboard_version.interactions` jsonb。复制仪表盘须 `structuredClone` 这份配置。省略字段的 PATCH 不得把已有 interactions 写成 `null`。
 
-1. 用户操作写入 `DashboardRuntimeStore`（不直接改其他图表）。
-2. 各图表通过 Zustand selector 调用 `FilterEngine.computeForPanel`。
-3. 仅当本图 `extraWheres` / `sqlVariables` 实质变化时，`useGetData` 重新请求。
-4. UI 模式合并 `where`；SQL 模式传递 `sqlVariables`（`{{flag}}`）。
+## 7. 不要这样做
 
-### 3.3 配置面
-
-- **Action**：画布拖入交互组件 → 右侧配置 Flag、选项、作用域（数据集 + 字段 + 图表范围）。
-- **Linkage**：编辑器「交互配置」侧栏 → 主图、触发维度、从图表与过滤字段。
-- **Drill-down**：图表查询配置 `isDrilled` / `drillDown`；标题区面包屑回退。
-
-## 3.5 配置指南：筛选框如何关联图表字段
-
-### 两类字段不要混用
-
-| 配置项 | 作用 |
-|--------|------|
-| **筛选数据**的值字段 / 标签字段 | 决定下拉框**选项从哪来** |
-| **选择作用范围**的对应字段 | 决定选中值去过滤图表上的**哪一列** |
-
-### 作用范围怎么配
-
-1. 选数据源 → 数据集 → 图表（或「全部」）。
-2. **对应字段**：从目标数据集字段下拉选择（可搜索，不支持自定义手输）；取值为 `rawName`。
-3. 同一交互组件可配置多行 Scope，分别作用不同数据集或字段。
-
-### 运行时如何进查询
-
-1. 用户改筛选 → 写入运行时 `actionValues[组件标识]`。
-2. `FilterEngine` 判断该图是否落在 Scope 内。
-3. **UI 查询模式**：按对应字段追加 `=` / `IN` 条件到图表 `where`，再请求 `/query/panel`。
-4. **SQL 模式**：不按 Scope 写 Where；在 SQL 中用 `{{组件标识}}` 引用同一 Flag。
-
-逐步说明与匹配规则见 DataView 实现 spec **§4**。
-
-### 3.4 图表点击与 URL
-
-- G2 图表在 `useRenderG2Chart` 统一绑定 `element:click`，经 `onPlotClick` 写入 Runtime Store。
-- 运行态查询参数 `av`（JSON）同步 `actionValues`，支持筛选状态分享；离开页面重置运行时状态。
-
-## 4. 开发 / AI 禁止项
-
-- 禁止在图表插件内直接监听其他图表事件做联动。
-- 禁止用全局大 `filters` 对象让全部图表无差别订阅。
-- 新增交互能力时扩展 Runtime Store + FilterEngine，保持纯函数边界。
-
-## 5. 相关文档
-
-| 文档 | 位置 |
-|------|------|
-| 产品优势 | [product/features.md](../product/features.md) |
-| 前端实现 spec | `DataView/spec/development/dashboard-interact-engine.md` |
-| MetaRepo 索引 | `spec/development/dashboard-interact-overview.md` |
-| 仪表盘全局过滤（非本引擎） | [dashboard-global-filters.md](./dashboard-global-filters.md) |
+- 在图表插件里监听其它图表事件做联动。
+- 用全局大 `filters` 让所有图无差别订阅。
+- 把高亮、切页、跳转塞进 `FilterEngine` 或 queryKey。
+- 用 hover 写 `extraWheres` 或打开 URL。
+- 把「打开仪表盘 / 外链」做成 Action 控件。跳转是交互规则，不是 Flag。
+- 用多条 `filterPanels` 模仿主从联动。主从维度绑定的事实来源仍是 `links`。

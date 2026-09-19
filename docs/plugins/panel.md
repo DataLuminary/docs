@@ -63,4 +63,4 @@ type PanelRenderProps = {
 1. **只渲染、不取数**：禁止在 Panel 内直接打外部 JDBC/HTTP 绕过 QueryService（除明确的纯前端 Widget，如 `image` / `video`）。  
 2. **插件间不互调**：联动与筛选由仪表盘交互引擎根据状态派生。  
 3. **仪表盘上的可视块都应是 panel / action / layout**：保持资源模型一致，便于权限与分享。  
-4. 返回字段约定见 [API · Panel](/api/Charts)。
+4. 返回字段约定见 [API 参考索引](/develop/api)。

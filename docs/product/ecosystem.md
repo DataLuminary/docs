@@ -26,6 +26,21 @@
 | [VistaRemote](https://remote.vistacast.dev) | 控 | [remote.vistacast.dev](https://remote.vistacast.dev) | 远程运维、录制、审计和效率数据 |
 | [DoerFlow](https://doerflow.dev) | 赚 | [doerflow.dev](https://doerflow.dev) | Agent 运行、技能、交易和调用数据 |
 
+## 集成状态（已通 / 规划中）
+
+深度文档在各产品仓与 [LuminaryWorks Docs](https://github.com/LuminaryWorks/docs)，本表只标与 DataLuminary 的协同成熟度，避免把规划写成现状。
+
+| 产品 | 与 DataLuminary | 状态 | 说明 |
+|------|-----------------|------|------|
+| LuminaryWorks Identity | 统一登录 / SSO | **已通（标准路径）** | 见 [统一身份](./unified-identity.md) |
+| SyncroBrain | 设备 / 遥测进数据集 | 规划中 | 场景组合可售前描述；专用连接器按项目 |
+| VistaCast | 客流 / 告警进看板 | 规划中 | 同上 |
+| VistaRemote | 运维审计进报表 | 规划中 | 同上 |
+| BlockyEdu | 学情 / 课程数据 | 规划中 | 同上 |
+| DoerFlow | Agent 调用与收益看板 | 规划中 | 同上 |
+
+状态变更时请同步 [未来版本](./upcoming.md) 与内部 [文档暴露需求](./docs-product-gaps.md)。
+
 ## 协同原则
 
 - **独立商业化**：每个产品都能单独部署、单独交付、单独服务客户。

@@ -100,6 +100,7 @@ DataLuminary 可单独售卖，也可与 SyncroBrain、VistaCast、VistaRemote�
 |------|------|
 | [统一身份与企业 SSO](./unified-identity.md) | 产品 / 售前 / 私有化交付 |
 | [完整产品能力](./features.md) | 产品 / 售前 |
+| [仪表盘交互能力](./dashboard-interactions.md) | 产品 / 售前 / 实施 |
 | [数据集与分析存储](./dataset-modeling.md) | 产品 / 售前 / 交付 |
 | [数据集零配置供给](../develop/dataset-provisioning.md) | 研发 |
 | [产品愿景](./vision.md) | 战略 / 投资 |
