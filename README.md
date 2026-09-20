@@ -1,6 +1,8 @@
-﻿# ProductWhitePaper
+# docs
 
-ProductWhitePaper is the [Rspress 2](https://rspress.rs/) site for **DataLuminary** user and developer documentation (one site, four audience entry points).
+DataLuminary 用户与开发者文档站（[Rspress 2](https://rspress.rs/)）：一套站点、多受众入口。
+
+GitHub：[`DataLuminary/docs`](https://github.com/DataLuminary/docs) · 站点：[docs.dataluminary.dev](https://docs.dataluminary.dev)
 
 ## Information architecture
 
