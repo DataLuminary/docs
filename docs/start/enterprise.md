@@ -31,6 +31,6 @@
 | 权限模型 | [权限架构设计](/permission/architecture) |
 | Grafana / DataEase 迁入 | [Grafana](/migrate/grafana) · [DataEase](/migrate/dataease) |
 | SSO / 嵌入对接 | [企业 SSO](/develop/iam-enterprise-sso) · [嵌入对接](/develop/embed-integration) |
-| 插件扩展面 | [插件核心概念](/plugins/) |
+| 插件扩展面 / 能否二开 | [为什么方便二开](/plugins/why-extend) · [关键选型](/plugins/decisions) |
 
 交付栏目总览：[交付](/deliver/)。需要写代码时转 [开发者路径](./developer.md)。

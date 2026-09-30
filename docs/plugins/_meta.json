@@ -2,16 +2,60 @@
   {
     "type": "file",
     "name": "index",
-    "label": "核心概念"
+    "label": "从这里开始"
   },
   {
     "type": "file",
-    "name": "design",
-    "label": "开发说明"
+    "name": "why-extend",
+    "label": "为什么方便二开"
+  },
+  {
+    "type": "file",
+    "name": "decisions",
+    "label": "关键选型"
+  },
+  {
+    "type": "file",
+    "name": "constraints",
+    "label": "二开红线"
   },
   {
     "type": "divider",
     "dashed": true
+  },
+  {
+    "type": "file",
+    "name": "guide-panel",
+    "label": "开发图表插件"
+  },
+  {
+    "type": "file",
+    "name": "guide-action",
+    "label": "开发交互插件"
+  },
+  {
+    "type": "file",
+    "name": "guide-dashboard",
+    "label": "开发仪表盘插件"
+  },
+  {
+    "type": "file",
+    "name": "guide-layout",
+    "label": "开发布局插件"
+  },
+  {
+    "type": "file",
+    "name": "guide-datasource",
+    "label": "开发数据源插件"
+  },
+  {
+    "type": "divider",
+    "dashed": true
+  },
+  {
+    "type": "file",
+    "name": "design",
+    "label": "注册与加载"
   },
   {
     "type": "file",

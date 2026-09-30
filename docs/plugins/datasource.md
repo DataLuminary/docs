@@ -1,17 +1,19 @@
 # 数据源插件
 
+> 前后端一起做的步骤见 [开发数据源插件](./guide-datasource.md)。`package.json` 的 `mode` 是 `data`。ClickHouse 目录未进入内置注册表，不要当成已交付类型。
+
 数据源插件负责把外部存储 **接入平台**：展示连接配置、测试连通性，并把凭据交给 DataTalk。
 
-**关键边界**：图表 **不** 通过数据源插件实例直接 `query()`。配图数据一律来自 **数据集 + QueryService**。数据源插件在数据集建模、连接管理场景使用。
+**关键边界**：图表 **不** 通过数据源插件实例直接 `query()`。配图数据一律来自 **数据集 + 语义查询**。数据源插件在数据集建模、连接管理场景使用。
 
 ## 内置类型
 
 | kind | 说明 |
 |------|------|
 | `mysql` | MySQL |
-| `postgresql` | PostgreSQL |
-| `sql-server` | SQL Server |
-| `click-house` | ClickHouse |
+| `mariadb` | MariaDB |
+| `postgresql` | PostgreSQL（别名 `postgres`） |
+| `mssql` | SQL Server（别名 `SqlServer` / `MsSql`） |
 | `excel` | Excel / 表格文件 |
 
 ## 插件组成
@@ -40,7 +42,7 @@ DataView/src/plugins/datasource/mysql/
 flowchart LR
   UI[数据源 Config UI] -->|CRUD 连接| API["DataTalk /api/connect/*"]
   SET[数据集] -->|引用连接| API
-  CH[图表] -->|dataset + query| Q["POST /query/panel"]
+  CH[图表] -->|dataset + query| Q["POST semantic/query"]
   Q --> QS[QueryService]
   QS --> CS[ConnectService]
   CS --> DB[(外部库)]

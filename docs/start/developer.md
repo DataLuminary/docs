@@ -15,7 +15,7 @@
 |------|----------------|------------------|
 | iframe / SDK 嵌入 | [仪表盘嵌入](/share/embed) | [第三方嵌入对接](/develop/embed-integration) |
 | 企业 SSO / 私有化 IAM | [统一身份](/product/unified-identity) | [企业 SSO](/develop/iam-enterprise-sso) · [私有化权限](/develop/iam-private-deploy) · [权限架构](/permission/architecture) |
-| 写图表 / 数据源插件 | — | [插件核心概念](/plugins/) · [开发说明](/plugins/design) |
+| 写插件 / 判断能否二开 | [为什么方便二开](/plugins/why-extend) | [关键选型](/plugins/decisions) · [红线](/plugins/constraints) · [图表](/plugins/guide-panel) · [交互](/plugins/guide-action) · [仪表盘](/plugins/guide-dashboard) · [布局](/plugins/guide-layout) · [数据源](/plugins/guide-datasource) |
 | 仪表盘交互 / 过滤 | [交互能力](/product/dashboard-interactions) | [交互引擎](/develop/dashboard-interact-engine) · [全局过滤](/develop/dashboard-global-filters) |
 | 布局与自由大屏 | [布局插件](/product/dashboard-layout-plugins) | [布局架构](/develop/dashboard-layout-plugins) · [自由布局](/develop/dashboard-position-layout) |
 | AI 洞察管线 | [AI 洞察](/product/ai-insights) | [AI 洞察实现](/develop/ai-insights) |

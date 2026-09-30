@@ -1,5 +1,7 @@
 # 图表插件
 
+> 步骤、Formily 写法和登记方式见 [开发图表插件](./guide-panel.md)。本文只保留概念。`package.json` 的 `mode` 是 `chart` 或 `decoration`，不是 `panel`。
+
 图表（panel）插件负责 **某一类可视化或 Widget** 的渲染与属性配置。数据由平台按数据集查询后注入，插件不连接数据库。
 
 富文本（`rich-text`）为半依赖查询的文本 Widget：MDX + `<BIMetric />` 指标胶囊。见 [富文本图表](./rich-text.md)。

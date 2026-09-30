@@ -88,5 +88,5 @@ flowchart LR
 ## 延伸阅读
 
 - [产品概览](/product/) · [产品愿景](/product/vision) · [完整产品能力](/product/features)
-- [架构概览](/develop/architecture) · [插件核心概念](/plugins/)
+- [架构概览](/develop/architecture) · [为什么方便二开](/plugins/why-extend) · [关键选型](/plugins/decisions) · [插件入口](/plugins/)
 - [LuminaryWorks 生态](/product/ecosystem)

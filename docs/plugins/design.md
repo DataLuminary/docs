@@ -1,97 +1,48 @@
-# 插件开发说明
+# 注册与加载
 
-## 三类（五模式）插件
+写哪一类插件、属性用什么、有哪些红线，见 [从这里开始](./index.md)。本文只说明代码里插件如何被找到。
 
-| 文档 | Mode | 说明 |
-|------|------|------|
-| [数据源](./datasource.md) | `datasource` | 连接配置 |
-| [图表](./panel.md) | `panel` | 可视化 / Widget |
-| [面板](./dashboard.md) | `dashboard` + `layout` | 整页几何 + 页内容器 |
-| （代码）`src/plugins/actions/` | `action` | 交互控件 |
+## 静态注册
 
-## 生态分工
+内置插件由各类 `index` 静态 import，放进 Zustand `usePluginsStore`。`getPlugin(kind, category)` 先查内置映射，再查缓存。非内置才可能走远程拉取；日常二开不要依赖远程加载。
 
-```text
-数据源插件 ──配置──► DataTalk Connect
-                         │
-数据集 / QueryService ◄──┘
-                         │
-图表 panel ◄──查询结果───┘
-                         │
-仪表盘 / 布局插件 ──编排整页──► 分享 / 嵌入 / 订阅
-```
-
-- **图表插件**：`Panel` 渲染 + `Config` 配置 + `package.json` / meta。  
-- **数据源插件**：`Config` / 表单组件；**无**图表侧 `query()` 实例调用。  
-- **仪表盘插件**：`grid` | `position` | `list`。  
-- **布局插件**：`row` | `tab` | `swiper`。
-
-## 目录结构（DataView）
-
-内置插件静态打包进 DataView，大致如下：
-
-```text
-DataView/src/plugins/
-  datasource/{mysql,postgresql,sql-server,excel,click-house}/
-  panels/{line,bar,pie,...,rich-text,image,video}/
-  actions/{inputer,radio,selector,time-picker,time-ranger}/
-  dashboard/{grid,position,list,shared}/
-  layout/{row,tab,swiper,placeholder,shared}/
-
-DataView/src/store/plugins.tsx     # Zustand 注册表
-DataView/src/hooks/useGetPlugins.tsx
-DataView/src/types/plugins.ts
-```
-
-每个插件目录通常包含：入口模块、`package.json`（kind / mode / 名称）、UI 组件、可选 logo。
-
-元数据示例：
-
-```json
-{
-  "name": "MySQL",
-  "kind": "mysql",
-  "mode": "datasource",
-  "build_in": true
-}
-```
-
-## 加载机制（当前）
-
-**不是** SystemJS / Vuex。
-
-1. 各类 `index.ts` **静态 import** 内置插件，写入 `*BuildIn` 映射。  
-2. `usePluginsStore.getPlugin(kind, category)` 优先返回内置，否则查缓存 Map。  
-3. 非内置可走远程拉取接口（规划 / 按需）；日常内置插件不依赖远程加载。  
-4. 状态在 **Zustand**，与编辑器、交互状态同一套 React 栈。
+| category | 映射 | 文件 |
+|----------|------|------|
+| `panel` | `PanelSourceBuildIn` | `DataView/src/plugins/panels/index.ts` |
+| `datasource` | `DataSourceBuildIn` | `DataView/src/plugins/datasource/index.tsx` |
+| `action` | `ActionSourceBuildIn` | `DataView/src/plugins/actions/index.ts` |
+| `dashboard` | `DashboardBuildIn` | `DataView/src/plugins/dashboard/index.ts` |
+| `layout` | `LayoutBuildIn` | `DataView/src/plugins/layout/index.ts` |
 
 ```typescript
-import { usePluginsStore } from "@/store/plugins";
-
 const plugin = usePluginsStore.getState().getPlugin("line", "panel");
-// → { Panel, Config, meta, ... }
 ```
 
-图表侧使用示例（示意）：
+这不是 SystemJS，也不是 Vuex。
 
-```typescript
-const { Panel, Config } = await resolvePanelPlugin("line");
-// 宿主负责 query；Panel 只接收 data / config props
-```
+## mode 与 category
 
-## 图表数据约定
+`package.json` 的 `mode` 描述插件自己的种类；`getPlugin` 的第二个参数是注册表分类。
 
-- `PanelModel` 持有 `dataset` / `datasetUid` 与 `query`，**不**持有可执行 datasource 实例。  
-- 宿主 `usePanelQueryController` → `POST /query/panel`。  
-- 插件内建议把「查询结果 → 图表库 options」收进 hooks，便于替换 G2 / ECharts 等实现。
+| 插件 | `mode` | `getPlugin` category |
+|------|--------|----------------------|
+| 图表 | `chart` | `panel` |
+| 装饰 | `decoration` | `panel` |
+| 数据源 | `data` | `datasource` |
+| 交互控件 | `action` | `action` |
+| 整页几何 | `dashboard` | `dashboard` |
+| 页内容器 | `layout` | `layout` |
 
-返回结构与接口说明见 [API 参考索引](/develop/api)。
+只有图表有统一工厂 `definePanelPlugin`。其余四类导出 `{ meta, Panel, Config, ... }`。
 
-## 相关规格（工程）
+## 元数据里会改变行为的字段
 
-| 主题 | 位置 |
-|------|------|
-| 仪表盘 / 布局插件 | DataView `spec/development/dashboard-layout-plugins.md` |
-| 数据源插件 | DataView `spec/development/datasource-plugins.md` |
-| 混合查询 | DataView `spec/development/hybrid-query-architecture.md` |
-| 富文本 | DataView `spec/development/rich-text-panel.md` |
+- `kind`：注册表的键，也是资源上保存的类型。数据源的 `kind` 还要和 DataTalk 连接器一致。
+- `version: "unfinished"`：禁用。不要把未完成插件登记成可选用。
+- `source: "builtin"`：随 DataView 打包。
+- 数据源 `testable: true`：显示连通测试。
+- 图表 `dependQuery`、`metricType`、`dimensionType`：编辑器用来约束字段槽位。真正是否发查询还要看 `definePanelPlugin` 的 `capabilities.requiresQuery`。
+
+## 别名
+
+仅数据源注册表为旧数据保留了别名，例如 `postgres` → PostgreSQL，`SqlServer` / `MsSql` → `mssql`。新类型不要先发明别名。

@@ -24,8 +24,8 @@ flowchart TB
   end
 
   subgraph Server["DataTalk · NestJS / TypeScript"]
-    API[REST / Query / Connect / IAM]
-    QS[QueryService]
+    API[REST / 语义查询 / Connect / IAM]
+    QS[语义查询]
     CS[ConnectService]
     ACL[Casbin 资源权限]
     API --> QS
@@ -35,12 +35,12 @@ flowchart TB
   end
 
   subgraph Data["外部数据"]
-    DB[(MySQL / PG / CH / …)]
+    DB[(MySQL / PG / SQL Server / …)]
     FILE[Excel / CSV]
     EXT[API / 业务系统]
   end
 
-  ST -->|POST /query/panel| QS
+  ST -->|POST semantic/query| QS
   PL -->|连接配置| API
   CS --> DB
   CS --> FILE
@@ -53,7 +53,7 @@ flowchart TB
 数据源插件（只配连接）
     → 数据集（语义字段 / 指标）
     → 图表 query（绑定数据集，不直连库）
-    → DataTalk QueryService
+    → 宿主 POST semantic/query
     → 图表 Panel 只消费返回数据做渲染
     → 仪表盘 / 布局插件编排整页
 ```
@@ -95,7 +95,7 @@ DataLuminary **前后端与插件契约统一使用 TypeScript**（高性能热�
 | 类别 | 选型 | 用途 |
 |------|------|------|
 | UI | Ant Design | 编辑器壳、表单、管理页 |
-| 表单 | Formily | 复杂配置面板 |
+| 表单 | Formily（图表属性，JSX Schema） | 复杂图表配置。数据源连接表单仍用 Ant Design。原因见 [关键选型](/plugins/decisions) |
 | 状态 | Zustand | 插件注册表、编辑态、交互状态 |
 | 图表 | AntV G2 / S2 等（插件内可选） | 可视化渲染，按图表插件自由选择 |
 | 布局 | react-grid-layout 等 | 网格仪表盘；自由布局另有独立实现 |
@@ -117,16 +117,18 @@ DataLuminary **前后端与插件契约统一使用 TypeScript**（高性能热�
 sequenceDiagram
   participant Ed as 图表编辑器
   participant Q as usePanelQueryController
-  participant API as POST /query/panel
-  participant QS as QueryService
+  participant API as POST semantic/query
+  participant QS as SemanticQueryPlanner
   participant P as Chart Panel
 
   Ed->>Q: panel.dataset + panel.query
-  Q->>API: 查询请求
-  API->>QS: 解析数据集 · 拼 SQL · 走连接
+  Q->>API: 查询请求（含 FilterEngine 派生条件）
+  API->>QS: 解析语义模型 · 编译查询 · 走连接
   QS-->>P: rows / columns
   Note over P: 插件只渲染 props 数据<br/>不持有 datasource.query()
 ```
+
+图表宿主走 `POST semantic/query`。DataTalk 上仍有 `QueryService` 的 `POST query/panel`，新插件不要调用它。插件取舍见 [关键选型](/plugins/decisions)。
 
 面板与数据源的职责边界：
 

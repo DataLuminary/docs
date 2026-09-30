@@ -1,68 +1,54 @@
-# 插件：核心概念
+# 插件：从这里开始
 
-DataLuminary 采用 **微内核 + 插件** ：宿主提供编辑器壳、查询通道、权限与状态；场景差异由插件吸收。
+DataLuminary 把二开放在插件上：宿主保留编辑器、查询、权限和状态，场景差异由插件吸收。
 
-当前前端（DataView）内置五类插件模式：
+## 按你的目的
 
-| Mode | 目录 | 职责 |
-|------|------|------|
-| **datasource** | `src/plugins/datasource/` | 数据源 **连接配置 UI**；调用 DataTalk `/api/connect/*`。**不**向图表直供数据 |
-| **panel** | `src/plugins/panels/` | 图表 / Widget：渲染 + 配置；数据由宿主查询后以 props 注入 |
-| **action** | `src/plugins/actions/` | 仪表盘交互控件：输入、单选、下拉、时间等 |
-| **dashboard** | `src/plugins/dashboard/` | **整页几何**：`grid` / `position` / `list` |
-| **layout** | `src/plugins/layout/` | **页内容器**：行分组、标签页、轮播 |
+| 目的 | 阅读 |
+|------|------|
+| 判断要不要选这套 BI | [为什么方便二开](./why-extend.md) → [关键选型](./decisions.md) |
+| 写插件之前先知道不能做什么 | [二开红线](./constraints.md) |
+| 做一个新图表或装饰 | [开发图表插件](./guide-panel.md) |
+| 做一个筛选控件 | [开发交互插件](./guide-action.md) |
+| 做一种整页版式 | [开发仪表盘插件](./guide-dashboard.md) |
+| 做分组、标签、轮播 | [开发布局插件](./guide-layout.md) |
+| 接一种新的库 | [开发数据源插件](./guide-datasource.md) |
+| 查注册表和 `mode` 用词 | [注册与加载](./design.md) |
 
-> 历史 bk-vision 文档中的 SystemJS、Vuex、图表直连 `datasource.query()`、`card-panel` / tmagic 等，**已废弃**。请以本文与 DataView `src/plugins/`、`spec/development/` 为准。
+## 五类插件
 
-## 数据流（与 Grafana / 旧版的关键区别）
+注册表分类（`getPlugin` 的 category）和 `package.json` 的 `mode` 不是同一个词。
 
-许多 BI 让图表直连数据源 QueryEditor。DataLuminary 强制：
+| 注册表分类 | `package.json` `mode` | 目录 | 职责 |
+|------------|----------------------|------|------|
+| `panel` | `chart` 或 `decoration` | `DataView/src/plugins/panels/` | 图表与装饰。只渲染宿主给的数据 |
+| `datasource` | `data` | `DataView/src/plugins/datasource/` | 连接配置。不向图表供数 |
+| `action` | `action` | `DataView/src/plugins/actions/` | 筛选控件。把值写成 `actionValues` |
+| `dashboard` | `dashboard` | `DataView/src/plugins/dashboard/` | 整页几何：`grid` / `position` / `list` |
+| `layout` | `layout` | `DataView/src/plugins/layout/` | 页内容器：`row` / `tab` / `swiper` |
 
 ```text
 数据源插件（配连接）
-  → 数据集（语义字段）
-  → 图表 panel.dataset + panel.query
-  → POST /query/panel（DataTalk QueryService）
-  → Chart Panel 只渲染返回数据
+  → 数据集与语义模型
+  → 宿主 POST semantic/query
+  → 图表插件只渲染
+  → 仪表盘 / 布局插件编排整页
 ```
 
-```mermaid
-flowchart LR
-  DS[Datasource 插件] --> SET[数据集]
-  SET --> Q[Panel.query]
-  Q --> API[QueryService]
-  API --> CH[Panel 渲染]
-  CH --> DB[Dashboard / Layout 编排]
-```
+交互插件不在这条取数链中间发请求。它写入状态，由 `FilterEngine` 派生到查询上。
 
-## 仪表盘 vs 布局
+## 数据从哪来
 
-- **仪表盘插件**：整页怎么排（门户网格、大屏固定画布、移动列表）。  
-- **布局插件**：页内如何分组嵌套（分组 / 标签 / 轮播）；槽位内仍是 **同家族** 画布。  
-- 深入容器内部编辑使用 **Focus Mode**（保存合并、取消丢弃）。
+图表运行时查询是 DataTalk `POST semantic/query`，由 `usePanelQueryController` 发起。`POST query/panel` 仍留在 QueryService 上，**新插件不要调用它**。
 
-产品说明：[仪表盘与布局插件](/product/dashboard-layout-plugins) · 本目录：[面板插件](./dashboard.md)
+历史文档中的 SystemJS、Vuex、图表直连 `datasource.query()` 已废弃。
 
-## 图表插件
+## 专题
 
-- 契约：`definePanelPlugin` → `Panel` / `Config`（可选 AdvancePanel）。  
-- 内置类型一览：[图表类型](./panelTypes.md)  
-- 富文本等特殊 Widget：[富文本](./rich-text.md)  
-- 监控 / 大屏状态摘要：[状态告警卡片](./status-alarm-card.md)（点击四级计数过滤本卡明细）  
-- 大屏顶栏导航：[大屏导航菜单](./screen-nav-menu.md)（菜单项只发事件，切页 / 跳转由交互规则完成）  
-- 开发说明：[图表插件](./panel.md)
+下面这些是某一类内置插件的规则，不是五类插件的通用写法：
 
-## 数据源插件
-
-- 只负责连接表单与测试；查询由数据集 + QueryService 完成。  
-- 内置示例：MySQL、PostgreSQL、SQL Server、ClickHouse、Excel。  
-- 详见：[数据源插件](./datasource.md)
-
-## 交互（action）插件
-
-筛选、时间范围等写入仪表盘状态；交互引擎按配置 **派生** 各图表附加条件（状态驱动，而非图表间事件互抛）。版本级交互规则（强调、切页、跳转）与联动分工见 [仪表盘交互能力](/product/dashboard-interactions)。产品能力见 [完整产品能力 · 交互引擎](/product/features)；实现见 [交互引擎](/develop/dashboard-interact-engine)。
-
-## 下一步
-
-- [插件开发说明](./design.md) — 注册、目录、加载机制  
-- [面板插件](./dashboard.md) · [图表插件](./panel.md) · [数据源插件](./datasource.md)
+- [图表类型一览](./panelTypes.md)
+- [富文本](./rich-text.md)
+- [状态告警卡片](./status-alarm-card.md)
+- [大屏导航菜单](./screen-nav-menu.md)
+- [图表插件概念](./panel.md) · [数据源概念](./datasource.md) · [仪表盘与布局概念](./dashboard.md)

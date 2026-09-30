@@ -1,5 +1,10 @@
 # docs
 
+## 使用边界
+
+这些文档公开供人阅读，也允许搜索引擎索引。**不允许**用于训练 AI，也不允许把文档交给 AI 去生成一套同类产品。详见 [AI-USE.md](./AI-USE.md)。
+
+
 DataLuminary 用户与开发者文档站（[Rspress 2](https://rspress.rs/)）：一套站点、多受众入口。
 
 GitHub：[`DataLuminary/docs`](https://github.com/DataLuminary/docs) · 站点：[docs.dataluminary.dev](https://docs.dataluminary.dev)
