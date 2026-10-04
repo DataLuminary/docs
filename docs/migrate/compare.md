@@ -1,3 +1,7 @@
+---
+description: DataLuminary 与 Grafana、DataEase 等竞品对比，以及迁入路径概览。
+---
+
 # 竞品对比
 
 下图从数据链路、插件化、AI、私有化与嵌入等维度，对照 Grafana、Apache Superset、DataTalk、DataEase、DataView 与 **DataLuminary（本品）**。

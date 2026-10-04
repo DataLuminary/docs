@@ -1,5 +1,6 @@
 ---
 pageType: home
+description: DataLuminary 官方文档首页：按用户、开发者、企业与投资者角色进入开源 AI 原生 BI 产品、指南与交付文档。
 
 hero:
   name: DataLuminary

@@ -1,3 +1,7 @@
+---
+description: 从角色入口开始使用 DataLuminary：普通用户、开发者、企业客户与投资者的文档导航。
+---
+
 # 从这里开始
 
 本站只服务 **DataLuminary**（前端 DataView + 后端 DataTalk）。兄弟产品深度文档在 [LuminaryWorks Docs](https://github.com/LuminaryWorks/docs)；关系说明见 [生态协同](/product/ecosystem)。

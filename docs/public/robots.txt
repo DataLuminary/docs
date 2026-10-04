@@ -64,3 +64,4 @@ User-agent: omgili
 User-agent: omgilibot
 Disallow: /
 
+Sitemap: https://docs.dataluminary.dev/sitemap.xml

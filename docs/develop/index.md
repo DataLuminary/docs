@@ -1,3 +1,7 @@
+---
+description: DataLuminary 开发文档：架构、API、嵌入、SSO、插件二开与交互引擎实现。
+---
+
 # 开发导览
 
 DataLuminary 由两个独立仓库组成，本站「开发」栏目放**集成与实现说明**；发版规划在 MetaRepo `plan/`。
