@@ -11,6 +11,7 @@
   { "type": "file", "name": "dashboard-layout-plugins", "label": "仪表盘与布局插件" },
   { "type": "file", "name": "dashboard-interactions", "label": "仪表盘交互能力" },
   { "type": "file", "name": "scenario-demo", "label": "场景化 Demo 展厅" },
+  { "type": "file", "name": "screen-examples", "label": "四张大屏范例" },
   { "type": "divider" },
   { "type": "file", "name": "unified-identity", "label": "统一身份与企业 SSO" },
   { "type": "file", "name": "ecosystem", "label": "生态协同" },

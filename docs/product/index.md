@@ -30,7 +30,7 @@ DataLuminary 是面向 AI 时代的开源 BI 数据洞察平台。它把数据�
 - [战略白皮书](./whitepaper.md) · [产品愿景](./vision.md) · [生态协同](./ecosystem.md)
 - [数据集与分析存储](./dataset-modeling.md)（实现：[零配置供给](../develop/dataset-provisioning.md)）
 - [AI 洞察](./ai-insights.md)（实现：[AI 洞察设计](../develop/ai-insights.md)）
-- [仪表盘与布局](./dashboard-layout-plugins.md) · [仪表盘交互](./dashboard-interactions.md) · [场景 Demo](./scenario-demo.md)
+- [仪表盘与布局](./dashboard-layout-plugins.md) · [仪表盘交互](./dashboard-interactions.md) · [场景 Demo](./scenario-demo.md) · [四张大屏范例](./screen-examples.md)
 - [统一身份与企业 SSO](./unified-identity.md) · [无障碍范围](./accessibility-scope.md)
 - [状态告警卡片](../plugins/status-alarm-card.md) · 附录：[自由布局固定尺寸](./position-layout-fixed-canvas.md)
 

@@ -28,3 +28,7 @@ DataLuminary 用 **场景模板** 展示完整分析链路：行业问题 → �
 - 把模板用到自己的数据时，必须完成数据集映射；未映射的查询面板会保持未绑定。
 
 工程规格见平台仓库 `spec/features/scenario-demo.md`。图表与布局能力见 [仪表盘与布局插件](./dashboard-layout-plugins.md)。
+
+## 四张大屏范例
+
+经济运行监测、智慧城市、四川电力全景、站端孪生比普通图表多了三维场景和入场。配置步骤、素材目录和数据包字段见 [四张大屏范例](./screen-examples.md)。展厅里对应模板 id：`sc-economy-monitor`、`sc-smart-city`、`sc-power-grid`、`ops-station-twin`。
